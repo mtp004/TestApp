@@ -80,7 +80,10 @@
 				E5BB84642D5450B800137B05 /* ScrumdingerUITests */,
 				E5BB84432D5450AC00137B05 /* Products */,
 			);
+			indentWidth = 3;
 			sourceTree = "<group>";
+			tabWidth = 3;
+			usesTabs = 1;
 		};
 		E5BB84432D5450AC00137B05 /* Products */ = {
 			isa = PBXGroup;
