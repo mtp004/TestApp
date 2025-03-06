@@ -70,9 +70,17 @@ struct DetailView: View {
 
 
 struct DetailView_Previews: PreviewProvider {
-	 static var previews: some View {
-		  NavigationStack {
-				DetailView(scrum: .constant(DailyScrum.sampleData[0]))
-		  }
-	 }
+	static var previews: some View {
+		NavigationStack {
+			DetailView_StateWrapper(scrum: DailyScrum.sampleData[0])
+		}
+	}
+}
+
+struct DetailView_StateWrapper: View {
+	@State var scrum: DailyScrum
+	
+	var body: some View {
+		DetailView(scrum: $scrum)
+	}
 }
