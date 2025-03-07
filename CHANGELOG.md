@@ -1,3 +1,5 @@
+## [Unreleased]
+
 ### Changed
 - Updated `MeetingView()` to dynamically reflect the current scrum in `DetailView()`.
 - Modified `NavigationLink` in `DetailView.swift` to pass `scrum` as a binding to `MeetingView()`.
@@ -7,6 +9,6 @@
   - Applied `scrum.theme.mainColor` and `scrum.theme.accentColor` for theme-based styling.
   - Introduced a `MeetingView_StateWrapper` struct with `@State var scrum` for previewing.
 
-### Added
-- Implemented `StateWrapper` for `MeetingView` to manage state properly in previews.
+### Miscellaneous
+- Updated `UserInterfaceState.xcuserstate` (Xcode workspace state changes).
 
