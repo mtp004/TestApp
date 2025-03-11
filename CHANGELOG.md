@@ -1,19 +1,16 @@
-# Changelog
+# Changelog  
 
-### Changed
-- Updated `MeetingView()` to dynamically reflect the current scrum in `DetailView()`.
-- Modified `NavigationLink` in `DetailView.swift` to pass `scrum` as a binding to `MeetingView()`.
-- Enhanced UI in `MeetingView()`:
-  - Applied `scrum.theme.mainColor` and `scrum.theme.accentColor` for theme-based styling.
-  - Introduced a `MeetingView_StateWrapper` struct with `@State var scrum` for previewing.
-- Refactored meeting header to a separate component (`MeetingHeaderView.swift`)
+## [72e613f] - 2025-03-10  
 
-### Added
-- Created new `MeetingHeaderView.swift` component with:
-  - Progress visualization for meeting timeline
-  - Display of seconds elapsed and seconds remaining
-  - Proper accessibility labels and values
-  - Preview functionality with `MeetingHeaderView_StateWrapper`
+### Added  
+- Implemented `MeetingFooterView` to display speaker information and a skip button.  
+- Introduced `scrumTimer` in `MeetingView` to manage scrum timing.  
+- `MeetingView` now includes a header (`MeetingHeaderView`) displaying elapsed and remaining time.  
 
-### Miscellaneous
-- Updated `UserInterfaceState.xcuserstate` (Xcode workspace state changes).
+### Updated  
+- Replaced the manual speaker tracking UI in `MeetingView` with `MeetingFooterView`.  
+- `MeetingView` now resets and starts the `scrumTimer` on appear, and stops it on disappear.  
+
+### Fixed  
+- Skip speaker button is now functional and updates the current active speaker.  
+
