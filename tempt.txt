@@ -1,0 +1,131 @@
+commit d351105c24043eab980ff78610e9fad29c23e8b4
+Author: Tri Pham <tri.pham121@icloud.com>
+Date:   Tue Mar 11 12:01:24 2025 -0400
+
+    ScrumView() plus button now allow modifying a new scrum and adding it to the current scrum list
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 6a57eb4..e289a01 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,19 +1,16 @@
+-# Changelog
++# Changelog  
+ 
+-### Changed
+-- Updated `MeetingView()` to dynamically reflect the current scrum in `DetailView()`.
+-- Modified `NavigationLink` in `DetailView.swift` to pass `scrum` as a binding to `MeetingView()`.
+-- Enhanced UI in `MeetingView()`:
+-  - Applied `scrum.theme.mainColor` and `scrum.theme.accentColor` for theme-based styling.
+-  - Introduced a `MeetingView_StateWrapper` struct with `@State var scrum` for previewing.
+-- Refactored meeting header to a separate component (`MeetingHeaderView.swift`)
++## [72e613f] - 2025-03-10  
+ 
+-### Added
+-- Created new `MeetingHeaderView.swift` component with:
+-  - Progress visualization for meeting timeline
+-  - Display of seconds elapsed and seconds remaining
+-  - Proper accessibility labels and values
+-  - Preview functionality with `MeetingHeaderView_StateWrapper`
++### Added  
++- Implemented `MeetingFooterView` to display speaker information and a skip button.  
++- Introduced `scrumTimer` in `MeetingView` to manage scrum timing.  
++- `MeetingView` now includes a header (`MeetingHeaderView`) displaying elapsed and remaining time.  
++
++### Updated  
++- Replaced the manual speaker tracking UI in `MeetingView` with `MeetingFooterView`.  
++- `MeetingView` now resets and starts the `scrumTimer` on appear, and stops it on disappear.  
++
++### Fixed  
++- Skip speaker button is now functional and updates the current active speaker.  
+ 
+-### Miscellaneous
+-- Updated `UserInterfaceState.xcuserstate` (Xcode workspace state changes).
+diff --git a/Scrumdinger.xcodeproj/project.xcworkspace/xcuserdata/tripham.xcuserdatad/UserInterfaceState.xcuserstate b/Scrumdinger.xcodeproj/project.xcworkspace/xcuserdata/tripham.xcuserdatad/UserInterfaceState.xcuserstate
+index f45a94c..26006bb 100644
+Binary files a/Scrumdinger.xcodeproj/project.xcworkspace/xcuserdata/tripham.xcuserdatad/UserInterfaceState.xcuserstate and b/Scrumdinger.xcodeproj/project.xcworkspace/xcuserdata/tripham.xcuserdatad/UserInterfaceState.xcuserstate differ
+diff --git a/Scrumdinger/View/NewScrumSheet.swift b/Scrumdinger/View/NewScrumSheet.swift
+new file mode 100644
+index 0000000..1da9e7f
+--- /dev/null
++++ b/Scrumdinger/View/NewScrumSheet.swift
+@@ -0,0 +1,48 @@
++//
++//  NewScrumSheet.swift
++//  Scrumdinger
++//
++//  Created by Tri Pham on 3/11/25.
++//
++
++import SwiftUI
++
++struct NewScrumSheet: View {
++	@Binding var scrums: [DailyScrum]
++	@Binding var isPresentingNewScrumView: Bool
++	@State private var newScrum = DailyScrum.emptyScrum
++	var body: some View {
++	 NavigationStack{
++		 DetailEditView(scrum: $newScrum)
++			 .toolbar{
++				ToolbarItem(placement: .cancellationAction) {
++					Button("Dismiss"){
++						isPresentingNewScrumView = false
++					}
++				}
++				ToolbarItem(placement: .confirmationAction) {
++					Button("Add"){
++						scrums.append(newScrum)
++						isPresentingNewScrumView = false
++					}
++				}
++			}
++		}
++	}
++}
++
++struct NewScrumSheet_Previews: PreviewProvider {
++	static var previews: some View {
++		NewScrumSheet_StateWrapper(scrums: DailyScrum.sampleData)
++	}
++}
++
++struct NewScrumSheet_StateWrapper: View {
++	@State var scrums: [DailyScrum]
++	
++	var body: some View {
++		NewScrumSheet(scrums: $scrums ,isPresentingNewScrumView: .constant(true))
++	}
++}
++
++
+diff --git a/Scrumdinger/View/ScrumsView.swift b/Scrumdinger/View/ScrumsView.swift
+index 3c2ee4a..acd8067 100644
+--- a/Scrumdinger/View/ScrumsView.swift
++++ b/Scrumdinger/View/ScrumsView.swift
+@@ -9,6 +9,7 @@ import SwiftUI
+ 
+ struct ScrumsView: View {
+ 	@Binding var scrums: [DailyScrum]
++	@State var isPresentingNewScrumView = false
+ 	
+ 	var body: some View {
+ 		NavigationStack{
+@@ -21,12 +22,17 @@ struct ScrumsView: View {
+ 			}
+ 			.navigationTitle("Daily Scrums")
+ 			.toolbar{
+-				Button(action: {}){
++				Button(action: {
++					isPresentingNewScrumView = true
++				}){
+ 					Image(systemName: "plus")
+ 				}
+ 				.accessibilityLabel("New Scrum")
+ 			}
+ 		}
++		.sheet(isPresented: $isPresentingNewScrumView){
++			NewScrumSheet(scrums: $scrums, isPresentingNewScrumView: $isPresentingNewScrumView)
++		}
+ 	}
+ }
+ 
