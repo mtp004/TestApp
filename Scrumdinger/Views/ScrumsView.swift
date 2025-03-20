@@ -8,18 +8,33 @@ struct ScrumsView: View {
 	@Binding var scrums: [DailyScrum]
 	@Environment(\.scenePhase) private var scenePhase
 	@State private var isPresentingNewScrumView = false
+	@State private var isShowingDeleteConfirmation = false
+	@State private var indexToDelete: IndexSet?
+	
 	let saveAction: () -> Void
 	
 	var body: some View {
 		NavigationStack {
 			List {
-				ForEach($scrums) {$scrum in
-					NavigationLink(destination: DetailView(scrum: $scrum)) {
-						CardView(scrum: scrum)
-					}
-					.listRowBackground(scrum.theme.mainColor)
-				}
-				.onDelete(perform: DeleteScrum)
+				ForEach($scrums) { $scrum in
+						  NavigationLink(destination: DetailView(scrum: $scrum)) {
+								CardView(scrum: scrum)
+						  }
+						  .swipeActions(edge: .trailing) {
+								Button {
+									 // Break this into simpler steps
+									 let scrumId = scrum.id
+									 if let index = scrums.firstIndex(where: { $0.id == scrumId }) {
+										  indexToDelete = IndexSet([index])
+										  isShowingDeleteConfirmation = true
+									 }
+								} label: {
+									Label("Delete", systemImage: "trash")
+								}
+								.tint(.red)
+						  }
+						  .listRowBackground(scrum.theme.mainColor)
+					 }
 			}
 			.navigationTitle("Daily Scrums")
 			.toolbar {
@@ -39,10 +54,17 @@ struct ScrumsView: View {
 				saveAction()
 			}
 		}
-	}
-	
-	func DeleteScrum(at offsets: IndexSet){
-		scrums.remove(atOffsets: offsets)
+		.alert("Are you sure you want to delete this scrum?", isPresented: $isShowingDeleteConfirmation, actions: {
+						Button("Cancel", role: .cancel) {
+							indexToDelete = nil
+						}
+						Button("Delete", role: .destructive) {
+							 if let indexSet = indexToDelete {
+								  scrums.remove(atOffsets: indexSet)
+								  indexToDelete = nil
+							 }
+						}
+				  })
 	}
 }
 
