@@ -1,20 +1,28 @@
-# Changelog
+# Scrumdinger App Changes - Changelog
 
-## [Unreleased]
-### Added
-- Introduced `MeetingTimeView.swift` to display the current speaker during a scrum meeting.
-- Implemented `MeetingTimeView` into `MeetingView.swift`, replacing the generic circle placeholder.
-- Added swipe-to-delete functionality in `ScrumsView.swift`, allowing users to delete scrums with a confirmation dialog.
+## File Renames
+- `MeetingTimeView.swift` → `MeetingTimerView.swift` (Name correction for consistency)
 
-### Changed
-- Refactored `MeetingView.swift` to integrate `MeetingTimeView`, improving readability and maintainability.
-- Updated `ScrumsView.swift` to include a deletion confirmation alert, preventing accidental scrum deletions.
+## Structure Renames
+- `MeetingTimeView` structure renamed to `MeetingTimerView` for consistency
 
-### Fixed
-- Fixed UI alignment issues in `MeetingView.swift` by replacing a generic `Circle` with `MeetingTimeView`.
-- Resolved an issue where `ScrumsView.swift` would immediately delete scrums without user confirmation.
+## New Files Added
+- Added `SpeakrArc.swift` implementing the `SpeakerArc` shape for visualizing speaker progress
+  - Creates arcs representing each speaker's time allocation
+  - Includes calculations for positioning speaker arcs around a circle
+  - Implements the `Shape` protocol with `path(in:)` function
 
-### Removed
-- Removed the old inline circle-based timer display in `MeetingView.swift`, replacing it with the more informative `MeetingTimeView`.
+## UI Enhancements
+- Enhanced `MeetingTimerView` with visual speaker progress tracking
+  - Added overlay to display speaker arcs
+  - Implemented ForEach loop to render completed speaker segments
+  - Added rotation and stroke styling for speaker arcs
 
+## File References Updated
+- Updated `MeetingView.swift` to reference the renamed `MeetingTimerView` component
 
+## Implementation Details
+- `SpeakerArc` calculates angles based on speaker index and total speakers
+- Each speaker gets an equal portion of the full 360° circle
+- Arc drawing uses a small gap between segments (1° buffer)
+- The view maintains proper scaling with padding and size calculations

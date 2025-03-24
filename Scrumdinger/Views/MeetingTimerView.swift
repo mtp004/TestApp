@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MeetingTimeView: View {
+struct MeetingTimerView: View {
 	let speakers: [ScrumTimer.Speaker]
 	let theme: Theme
 	
@@ -24,11 +24,21 @@ struct MeetingTimeView: View {
 					.accessibilityElement(children: .combine)
 					.foregroundColor(theme.accentColor)
 			}
+			.overlay{
+				ForEach(speakers){speaker in
+					if speaker.isCompleted, let index = speakers.firstIndex(where: { $0.id == speaker.id }){
+						SpeakerArc(speakerIndex: index, totalSpeakers: speakers.count)
+							.rotation(Angle(degrees: 0))
+							.stroke(theme.mainColor, lineWidth: 12)
+					}
+				}
+			}
+			.padding(.horizontal)
 	}
 }
 
 #Preview {
-	MeetingTimeView(speakers:
+	MeetingTimerView(speakers:
 							[ScrumTimer.Speaker(name: "Bill", isCompleted: true), ScrumTimer.Speaker(name: "Cathy", isCompleted: false)],
 						 theme: .bubblegum
 						)
