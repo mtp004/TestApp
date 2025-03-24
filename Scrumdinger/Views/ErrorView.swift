@@ -18,7 +18,7 @@ struct ErrorView: View {
 				 .font(.title)
 				 .padding(.bottom)
 			 Text(errorWrapper.error.localizedDescription).font(.headline)
-			 Text(errorWrapper.message)
+				Text(errorWrapper.guidance)
 				 .font(.caption)
 				 .padding(.top)
 			 Spacer()
@@ -47,7 +47,7 @@ struct ErrorView_StateWrapper: View{
 	}
 	
 	static var wrapper: ErrorWrapper{
-		ErrorWrapper(error: SampleError.errorRequired, message: "Sample error")
+		ErrorWrapper(error: SampleError.errorRequired, guidance: "Sample error")
 	}
 	
 	var body: some View{

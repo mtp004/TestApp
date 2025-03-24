@@ -16,7 +16,7 @@ struct ScrumdingerApp: App {
 					do{
 						try await storage.save(scrums: storage.scrums)
 					} catch{
-						errorWrapper = ErrorWrapper(error: error, message: "Try again later.")
+						errorWrapper = ErrorWrapper(error: error, guidance: "Try again later.")
 					}
 				}
 			}
@@ -24,7 +24,7 @@ struct ScrumdingerApp: App {
 				do{
 					try await storage.load()
 				} catch{
-					errorWrapper = ErrorWrapper(error: error, message: "Scrumdinger will load sample data and continue.")
+					errorWrapper = ErrorWrapper(error: error, guidance: "Scrumdinger will load sample data and continue.")
 				}
 			}.sheet(item: $errorWrapper){
 				storage.scrums = DailyScrum.sampleData

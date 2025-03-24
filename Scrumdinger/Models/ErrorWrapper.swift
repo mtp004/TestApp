@@ -1,20 +1,17 @@
-//
-//  ErrorWrapper.swift
-//  Scrumdinger
-//
-//  Created by Tri Pham on 3/17/25.
-//
+/*
+ See LICENSE folder for this sample’s licensing information.
+ */
 
 import Foundation
 
-struct ErrorWrapper: Identifiable{
-	let id: UUID
-	let error: Error
-	let message: String
-	
-	init(id: UUID = UUID(), error: Error, message: String) {
-		self.id = id
-		self.error = error
-		self.message = message
-	}
+struct ErrorWrapper: Identifiable {
+    let id: UUID
+    let error: Error
+    let guidance: String
+
+    init(id: UUID = UUID(), error: Error, guidance: String) {
+        self.id = id
+        self.error = error
+        self.guidance = guidance
+    }
 }

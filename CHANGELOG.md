@@ -1,28 +1,23 @@
-# Scrumdinger App Changes - Changelog
+# Changelog
 
-## File Renames
-- `MeetingTimeView.swift` → `MeetingTimerView.swift` (Name correction for consistency)
+## [Unreleased]
 
-## Structure Renames
-- `MeetingTimeView` structure renamed to `MeetingTimerView` for consistency
+### Added
+- New `SpeechRecognizer.swift` model to support speech recognition functionality
+- Added microphone and speech recognition usage description keys in project configuration
 
-## New Files Added
-- Added `SpeakrArc.swift` implementing the `SpeakerArc` shape for visualizing speaker progress
-  - Creates arcs representing each speaker's time allocation
-  - Includes calculations for positioning speaker arcs around a circle
-  - Implements the `Shape` protocol with `path(in:)` function
+### Changed
+- Updated `ErrorWrapper` struct:
+  - Renamed `message` property to `guidance`
+- Modified `ScrumStore.swift`:
+  - Updated file URL creation to use `create: false` instead of `create: true`
+  - Minor code formatting improvements
+- Updated `ScrumdingerApp.swift` to use the new `guidance` property in `ErrorWrapper`
+- Updated `ErrorView.swift` to display the new `guidance` property
 
-## UI Enhancements
-- Enhanced `MeetingTimerView` with visual speaker progress tracking
-  - Added overlay to display speaker arcs
-  - Implemented ForEach loop to render completed speaker segments
-  - Added rotation and stroke styling for speaker arcs
+### Refactored
+- Standardized code comments to use multi-line comment style with licensing information
+- Improved error handling in speech recognition and file storage operations
 
-## File References Updated
-- Updated `MeetingView.swift` to reference the renamed `MeetingTimerView` component
-
-## Implementation Details
-- `SpeakerArc` calculates angles based on speaker index and total speakers
-- Each speaker gets an equal portion of the full 360° circle
-- Arc drawing uses a small gap between segments (1° buffer)
-- The view maintains proper scaling with padding and size calculations
+### Fixed
+- Corrected initialization of error handling in app storage and loading processes
